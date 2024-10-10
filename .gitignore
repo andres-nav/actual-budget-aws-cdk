@@ -1,2 +1,5 @@
-/.direnv/
-/.envrc
+**/.envrc
+**/.direnv/
+node_modules/
+.env
+/dist/

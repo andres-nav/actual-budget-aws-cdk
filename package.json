@@ -1,0 +1,17 @@
+{
+	"name": "Actual Budget deployed with AWS CDK",
+	"version": "1.0.0",
+	"description": "Deploying Docker Compose on EC2 with AWS CDK",
+	"main": "lib/my-stack.ts",
+	"scripts": {
+		"build": "tsc",
+		"cdk-deploy": "cdk deploy",
+		"cdk-diff": "cdk diff",
+		"cdk-synth": "cdk synth"
+	},
+	"devDependencies": {
+		"aws-cdk-lib": "^2.0.0",
+		"constructs": "^10.0.0",
+		"typescript": "^4.0.0"
+	}
+}

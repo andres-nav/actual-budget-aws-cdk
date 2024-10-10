@@ -12,11 +12,10 @@
           inherit system;
           config.allowUnfree = true;
         };
-        let
-        in
         mkShell {
           packages = [
-
+            nodejs
+            pnpm
           ];
         };
     };

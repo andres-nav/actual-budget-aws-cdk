@@ -1,0 +1,32 @@
+x-common-configuration: &common-configuration
+  restart: always
+  networks:
+    - actual_budget_network
+
+services:
+  server:
+    <<: *common-configuration
+    image: actualbudget/actual-server:latest
+    volumes:
+      - ${ACTUAL_BUDGET_DATA_PATH}:/data
+
+  nginx:
+    <<: *common-configuration
+    image: valian/docker-nginx-auto-ssl:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ssl_data:/etc/resty-auto-ssl
+    environment:
+      ALLOWED_DOMAINS: finances.andresnav.com
+      SITES: "${ALLOWED_DOMAINS}=server:5006"
+      FORCE_HTTPS: "true"
+
+volumes:
+  ssl_data:
+    driver: local
+
+networks:
+  actual_budget_network:
+    driver: bridge

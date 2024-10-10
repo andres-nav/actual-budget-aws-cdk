@@ -1,5 +1,7 @@
 **/.envrc
 **/.direnv/
-node_modules/
+**/venv/
+**/cdk.out/
 .env
-/dist/
+/node_modules/
+/cdk.context.json

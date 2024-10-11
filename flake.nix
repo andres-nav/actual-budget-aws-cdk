@@ -18,10 +18,12 @@
           buildInputs = [
             python-venv
             zlib
+
+            awscli2
           ];
         in
         mkShell {
-          packages = buildInputs
+          packages = buildInputs;
 
           shellHook = ''
             export LD_LIBRARY_PATH="${pkgs.lib.makeLibraryPath buildInputs}:$LD_LIBRARY_PATH"

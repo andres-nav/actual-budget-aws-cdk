@@ -8,6 +8,6 @@ from actual_budget_cdk.actual_budget_cdk_stack import ActualBudgetCdkStack
 
 app = cdk.App()
 ActualBudgetCdkStack(app, "ActualBudgetCdkStack",
-                     env=cdk.Environment(region='eu-west-1')),
+                     env=cdk.Environment(account='897729144438', region='eu-west-1')),
 
 app.synth()

@@ -8,7 +8,7 @@ services:
     <<: *common-configuration
     image: actualbudget/actual-server:latest
     volumes:
-      - ${ACTUAL_BUDGET_DATA_PATH}:/data
+      - $ACTUAL_BUDGET_DATA_PATH:/data
 
   nginx:
     <<: *common-configuration
@@ -19,8 +19,8 @@ services:
     volumes:
       - ssl_data:/etc/resty-auto-ssl
     environment:
-      ALLOWED_DOMAINS: finances.andresnav.com
-      SITES: "${ALLOWED_DOMAINS}=server:5006"
+      ALLOWED_DOMAINS: $DOMAIN_NAME
+      SITES: "$DOMAIN_NAME=server:5006"
       FORCE_HTTPS: "true"
 
 volumes:

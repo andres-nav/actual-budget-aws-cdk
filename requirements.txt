@@ -1,2 +1,4 @@
 aws-cdk-lib
 constructs
+requests
+python-dotenv

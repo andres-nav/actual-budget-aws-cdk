@@ -1,2 +1,63 @@
 #+title: Actual Budget deployment for AWS using AWS CDK
 
+This is a simple deployment of the [[https://actualbudget.org/][ActualBudget]] application using [[https://aws.amazon.com/cdk/][AWS CDK]]. The application is a simple budget tracking application that allows you to track your expenses and income.
+
+* Overview
+The deployment consists of the following resources:
+
+#+BEGIN_HTML
+<p align="center">
+  <img src="./resources/actual_budget_cdk_architecture.svg"/>
+</p>
+#+END_HTML
+
+- An AutoScalingGroup with a LaunchTemplate that deploys the application. Note that only one instance is deployed for cost reasons, but this is implemented so if problems arise, the instance will be replaced.
+- Default VPC with a public subnet and a security group that allows traffic on port 80 and 443 from the internet and port 22 from the AWS Instance Connect service.
+- An Env S3 bucket to store the =docker_compose.yml= file to deploy the application.
+- A Backup S3 bucket to store the backups of the application, it is set up to store the backups for 30 days in increments of 3 days.
+
+Cool things about this deployment:
+- Automatic SSL certificate generation with [[https://github.com/Valian/docker-nginx-auto-ssl][valian/docker-nginx-auto-ssl]]
+- Automatic backups of the application to a S3 bucket
+- Automatic recovery of the application in case of failure, but you will need to change the DNS record to the new instance.
+- The deployment is done using the AWS CDK, so you can easily modify the deployment to suit your needs.
+
+* Deployment
+In order to deploy the application, you need to have the following prerequisites: =npm=, =aws-cli=, =python=, and =git=. You also need to have an AWS account and have the AWS CLI configured with the necessary permissions.
+
+1. Clone the repository:
+   #+BEGIN_SRC shell
+   git clone https://github.com/andres-nav/actual-budget-aws-cdk.git
+   #+END_SRC
+
+2. Install the dependencies assuming you are using a *nix system:
+   #+BEGIN_SRC shell
+   make install
+   #+END_SRC
+
+3. Create =.env= file with the following content:
+   #+BEGIN_SRC shell
+   ACCOUNT_ID=<YOUR_ACCOUNT_ID>
+   AWS_PROFILE=<SSO_PROFILE>
+   REGION=<AWS_REGION>
+   DOMAIN_NAME=<DOMAIN_NAME>
+   #+END_SRC
+
+5. Bootstrap the CDK:
+   #+BEGIN_SRC shell
+   make bootstrap
+   #+END_SRC
+
+6. Deploy the application:
+   #+BEGIN_SRC shell
+   make deploy
+   #+END_SRC
+
+7. In your DNS provider, create a A record pointing to the public IP of the instance.
+
+* Things to consider
+The objective of this deployment is to provide a simple and cheap way to deploy the ActualBudget application. The deployment is not production-ready and should be used for testing purposes only. Some things to consider are:
+
+- If you want to use this deployment in production, you should consider using a load balancer and a private subnet for the instance.
+- Consider increasing the backup rate and retention period.
+- Remember to change the DNS record to the new instance in case of failure. It might take some time for the new instance to get a SSL certificate as the rate limit for Let's Encrypt is quite limited.
